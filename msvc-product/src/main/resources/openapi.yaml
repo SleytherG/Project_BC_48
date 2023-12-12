@@ -1,0 +1,193 @@
+openapi: 3.0.1
+info:
+  title: API Products V1
+  description: API que realiza las operaciones CRUD para productos que ofrece el banco.
+  version: "1.0.1"
+servers:
+  - url: http://localhost:9193
+tags:
+  - name: Products
+    description: Products Controller
+paths:
+  /products:
+    get:
+      tags:
+        - Product
+      summary: Retrieve all products.
+      operationId: retrieveAllProducts
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Products'
+    post:
+      tags:
+        - Product
+      summary: Save new product
+      operationId: saveProduct
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+  /products/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: product ID
+        schema:
+          type: string
+    get:
+      tags:
+        - Product
+      summary: Retrieve a product
+      operationId: retrieveAProduct
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+    put:
+      tags:
+        - Product
+      summary: Update an existing product
+      operationId: updateProduct
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+    delete:
+      tags:
+        - Product
+      summary: Delete a product
+      operationId: deleteProduct
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+
+components:
+  schemas:
+    Products:
+      type: array
+      items:
+        $ref: '#/components/schemas/Product'
+    Product:
+      type: object
+      properties:
+        id:
+          type: string
+        idClient:
+          type: string
+        productType:
+          type: string
+    BankAccount:
+      type: object
+      properties:
+        id:
+          type: string
+        accountBankType:
+          type: string
+        balance:
+          type: string
+        accountType:
+          type: string
+    SavingsAccount:
+      allOf:
+        - $ref: '#/components/schemas/BankAccount'
+        - type: object
+          properties:
+            id:
+              type: string
+            maxTransactionLimit:
+              type: integer
+    CheckingAccount:
+      allOf:
+      - $ref: '#/components/schemas/BankAccount'
+      - type: object
+        properties:
+          id:
+            type: string
+          maintanceFee:
+            type: string
+    BankFixedTerm:
+      allOf:
+        - $ref: '#/components/schemas/BankAccount'
+        - type: object
+          properties:
+            id:
+              type: string
+            specificDay:
+              type: integer
+    BankCredit:
+      type: object
+      properties:
+        id:
+          type: string
+        numCredits:
+          type: string
+        creditType:
+          type: string
+    Credit:
+      allOf:
+        - $ref: '#/components/schemas/BankCredit'
+        - type: object
+          properties:
+            id:
+              type: string
+            amount:
+              type: string
+            dateCreated:
+              type: string
+    CreditCard:
+      allOf:
+        - $ref: '#/components/schemas/BankCredit'
+        - type: object
+          properties:
+            id:
+              type: string
+            expirationDate:
+              type: string
+            holderName:
+              type: string
+            totalLine:
+              type: string
+            currentLine:
+              type: string
+            cutOffDate:
+              type: string
+            paymentDate:
+              type: string
+            minPayment:
+              type: string
+            totalPayment:
+              type: string
+
+
+
+

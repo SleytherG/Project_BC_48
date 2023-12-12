@@ -1,0 +1,128 @@
+openapi: 3.0.1
+info:
+  title: API Client V1
+  description: API que realiza las operaciones CRUD de los clientes del banco.
+  version: "1.0.1"
+servers:
+  - url: http://localhost:9191
+tags:
+  - name: Client
+    description: Clients Controller
+paths:
+  /clients:
+    get:
+      tags:
+        - Client
+      summary: Retrieve all clients.
+      operationId: retrieveAllClients
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Clients'
+    post:
+      tags:
+        - Client
+      summary: Save new client
+      operationId: saveClient
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Client'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Client'
+  /clients/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: client ID
+        schema:
+          type: string
+    get:
+      tags:
+        - Client
+      summary: Retrieve a client
+      operationId: retrieveAClient
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Client'
+    put:
+      tags:
+        - Client
+      summary: Update an existing client
+      operationId: updateClient
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Client'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Client'
+    delete:
+      tags:
+        - Client
+      summary: Delete a client
+      operationId: deleteClient
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Client'
+
+components:
+  schemas:
+    Clients:
+      type: array
+      items:
+        $ref: '#/components/schemas/Client'
+    Client:
+      type: object
+      properties:
+        id:
+          type: string
+        documentNumber:
+          type: string
+        documentType:
+          type: string
+        phone:
+          type: string
+        email:
+          type: string
+    PersonalClient:
+      allOf:
+        - $ref: '#/components/schemas/Client'
+        - type: object
+          properties:
+            names:
+              type: string
+            surnames:
+              type: string
+    EnterpriseClient:
+      allOf:
+        - $ref: '#/components/schemas/Client'
+        - type: object
+          properties:
+            businessName:
+              type: string

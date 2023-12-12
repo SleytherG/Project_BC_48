@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   title: API Transactions V1
-  description: API que realiza las operaciones CRUD para las transacciones del banco.
+  description: API que realiza las operaciones CRUD para las transacciones de clientes del banco.
   version: "1.0.1"
 servers:
   - url: http://localhost:9194
@@ -32,14 +32,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/TransactionDTO'
+              $ref: '#/components/schemas/Transaction'
       responses:
         '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TransactionDTO'
+                $ref: '#/components/schemas/Transaction'
   /transactions/{id}:
     parameters:
       - name: id
@@ -59,7 +59,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TransactionDTO'
+                $ref: '#/components/schemas/Transaction'
     put:
       tags:
         - Transaction
@@ -70,14 +70,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/TransactionDTO'
+              $ref: '#/components/schemas/Transaction'
       responses:
         '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TransactionDTO'
+                $ref: '#/components/schemas/Transaction'
     delete:
       tags:
         - Transaction
@@ -89,15 +89,15 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TransactionDTO'
+                $ref: '#/components/schemas/Transaction'
 
 components:
   schemas:
     Transactions:
       type: array
       items:
-        $ref: '#/components/schemas/TransactionDTO'
-    TransactionDTO:
+        $ref: '#/components/schemas/Transaction'
+    Transaction:
       type: object
       properties:
         id:

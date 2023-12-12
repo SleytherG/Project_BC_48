@@ -1,0 +1,108 @@
+openapi: 3.0.1
+info:
+  title: API Debts V1
+  description: API que realiza las operaciones CRUD para las deudas de clientes del banco.
+  version: "1.0.1"
+servers:
+  - url: http://localhost:9192
+tags:
+  - name: Debt
+    description: Debts Controller
+paths:
+  /debts:
+    get:
+      tags:
+        - Debt
+      summary: Retrieve all debts of a client.
+      operationId: retrieveAllDebts
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Debts'
+    post:
+      tags:
+        - Debt
+      summary: Save new debt
+      operationId: saveDebt
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Debt'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Debt'
+  /debts/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: debt ID
+        schema:
+          type: string
+    get:
+      tags:
+        - Debt
+      summary: Retrieve a debt of a client
+      operationId: retrieveADebt
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Debt'
+    put:
+      tags:
+        - Debt
+      summary: Update an existing debt of a client
+      operationId: updateTransaction
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Debt'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Debt'
+    delete:
+      tags:
+        - Debt
+      summary: Delete a debt of a client
+      operationId: deleteDebt
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Debt'
+
+components:
+  schemas:
+    Debts:
+      type: array
+      items:
+        $ref: '#/components/schemas/Debt'
+    Debt:
+      type: object
+      properties:
+        id:
+          type: string
+        amount:
+          type: string
+        expirationDate:
+          type: string
