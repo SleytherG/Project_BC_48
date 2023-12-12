@@ -15,6 +15,12 @@
     <properties>
         <java.version>11</java.version>
         <spring-cloud.version>2021.0.3</spring-cloud.version>
+        <rxjava-version>3.1.5</rxjava-version>
+        <map-struct.version>1.5.5.Final</map-struct.version>
+        <openapi-generator.version>6.6.0</openapi-generator.version>
+        <jackson-nullable.version>0.2.6</jackson-nullable.version>
+        <springdoc-openapi.version>1.7.0</springdoc-openapi.version>
+        <archunit-junit5.version>1.1.0</archunit-junit5.version>
     </properties>
 
     <dependencies>
@@ -41,11 +47,7 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>io.projectreactor</groupId>
-            <artifactId>reactor-test</artifactId>
-            <scope>test</scope>
-        </dependency>
+
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-all</artifactId>
@@ -66,7 +68,7 @@
         <dependency>
             <groupId>io.reactivex.rxjava3</groupId>
             <artifactId>rxjava</artifactId>
-            <version>3.1.5</version>
+            <version>${rxjava-version}</version>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -78,17 +80,17 @@
             <artifactId>jackson-databind-nullable</artifactId>
             <version>${jackson-nullable.version}</version>
         </dependency>
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger2</artifactId>
-            <version>2.6.1</version>
-            <exclusions>
-                <exclusion>
-                    <artifactId>swagger-project</artifactId>
-                    <groupId>io.swagger.core.v3</groupId>
-                </exclusion>
-            </exclusions>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>io.springfox</groupId>-->
+<!--            <artifactId>springfox-swagger2</artifactId>-->
+<!--            <version>2.6.1</version>-->
+<!--            <exclusions>-->
+<!--                <exclusion>-->
+<!--                    <artifactId>swagger-project</artifactId>-->
+<!--                    <groupId>io.swagger.core.v3</groupId>-->
+<!--                </exclusion>-->
+<!--            </exclusions>-->
+<!--        </dependency>-->
 
         <dependency>
             <groupId>javax.validation</groupId>
@@ -96,22 +98,16 @@
             <version>2.0.1.Final</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-webflux-core</artifactId>
-            <version>${springdoc-openapi.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-webflux-ui</artifactId>
-            <version>${springdoc-openapi.version}</version>
-        </dependency>
-
-        <!--		<dependency>-->
-        <!--			<groupId>org.springdoc</groupId>-->
-        <!--			<artifactId>springdoc-openapi-starter-webflux-ui</artifactId>-->
-        <!--			<version>2.2.0</version>-->
-        <!--		</dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>org.springdoc</groupId>-->
+<!--            <artifactId>springdoc-openapi-webflux-core</artifactId>-->
+<!--            <version>${springdoc-openapi.version}</version>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>org.springdoc</groupId>-->
+<!--            <artifactId>springdoc-openapi-webflux-ui</artifactId>-->
+<!--            <version>${springdoc-openapi.version}</version>-->
+<!--        </dependency>-->
 
         <dependency>
             <groupId>org.webjars</groupId>
@@ -164,6 +160,35 @@
                     </excludes>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.openapitools</groupId>
+                <artifactId>openapi-generator-maven-plugin</artifactId>
+                <version>${openapi-generator.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${project.basedir}/src/main/resources/openapi.yaml</inputSpec>
+                            <generatorName>spring</generatorName>
+                            <apiPackage>${project.groupId}.api</apiPackage>
+                            <modelPackage>${project.groupId}.model</modelPackage>
+                            <supportingFilesToGenerate>ApiUtil.java</supportingFilesToGenerate>
+                            <configOptions>
+                                <rxJava>true</rxJava>
+                                <rxJavaVersion>3</rxJavaVersion>
+                                <delegatePattern>true</delegatePattern>
+                                <reactive>true</reactive>
+                                <useOptional>false</useOptional>
+                                <useResponseEntity>false</useResponseEntity>
+                                <useOptional>false</useOptional>
+                            </configOptions>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
         </plugins>
     </build>
 

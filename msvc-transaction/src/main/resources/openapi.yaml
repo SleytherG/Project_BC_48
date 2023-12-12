@@ -1,0 +1,108 @@
+openapi: 3.0.1
+info:
+  title: API Transactions V1
+  description: API que realiza las operaciones CRUD para las transacciones del banco.
+  version: "1.0.1"
+servers:
+  - url: http://localhost:9194
+tags:
+  - name: Transactions
+    description: Transactions Controller
+paths:
+  /transactions:
+    get:
+      tags:
+        - Transaction
+      summary: Retrieve all transactions.
+      operationId: retrieveAllTransactions
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transactions'
+    post:
+      tags:
+        - Transaction
+      summary: Save new transaction
+      operationId: saveTransaction
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransactionDTO'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionDTO'
+  /transactions/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: transaction ID
+        schema:
+          type: string
+    get:
+      tags:
+        - Transaction
+      summary: Retrieve a transaction
+      operationId: retrieveATransaction
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionDTO'
+    put:
+      tags:
+        - Transaction
+      summary: Update an existing transaction
+      operationId: updateTransaction
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransactionDTO'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionDTO'
+    delete:
+      tags:
+        - Transaction
+      summary: Delete a transaction
+      operationId: deleteTransaction
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionDTO'
+
+components:
+  schemas:
+    Transactions:
+      type: array
+      items:
+        $ref: '#/components/schemas/TransactionDTO'
+    TransactionDTO:
+      type: object
+      properties:
+        id:
+          type: string
+        dateTransaction:
+          type: string
+        transactionType:
+          type: string
