@@ -30,7 +30,9 @@ public class DebtServiceImpl implements DebtService {
 
   @Override
   public Maybe<Debt> retrieveADebt(String debtId) {
-    return debtRepository.findById(debtId);
+    return debtRepository
+      .findById(debtId)
+      .switchIfEmpty(Maybe.error(new DebtNotFoundException("Debt not found with id: " + debtId)));
   }
 
   @Override
