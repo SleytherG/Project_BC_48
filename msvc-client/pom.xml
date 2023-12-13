@@ -132,6 +132,12 @@
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-commons</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<scope>runtime</scope>
+			<optional>true</optional>
+		</dependency>
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>
@@ -162,34 +168,34 @@
 					</excludes>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>org.openapitools</groupId>
-				<artifactId>openapi-generator-maven-plugin</artifactId>
-				<version>${openapi-generator.version}</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>generate</goal>
-						</goals>
-						<configuration>
-							<inputSpec>${project.basedir}/src/main/resources/openapi.yaml</inputSpec>
-							<generatorName>spring</generatorName>
-							<apiPackage>${project.groupId}.api</apiPackage>
-							<modelPackage>${project.groupId}.model</modelPackage>
-							<supportingFilesToGenerate>ApiUtil.java</supportingFilesToGenerate>
-							<configOptions>
-								<rxJava>true</rxJava>
-								<rxJavaVersion>3</rxJavaVersion>
-								<delegatePattern>true</delegatePattern>
-								<reactive>true</reactive>
-								<useOptional>false</useOptional>
-								<useResponseEntity>false</useResponseEntity>
-								<useOptional>false</useOptional>
-							</configOptions>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
+<!--			<plugin>-->
+<!--				<groupId>org.openapitools</groupId>-->
+<!--				<artifactId>openapi-generator-maven-plugin</artifactId>-->
+<!--				<version>${openapi-generator.version}</version>-->
+<!--				<executions>-->
+<!--					<execution>-->
+<!--						<goals>-->
+<!--							<goal>generate</goal>-->
+<!--						</goals>-->
+<!--						<configuration>-->
+<!--							<inputSpec>${project.basedir}/src/main/resources/openapi.yaml</inputSpec>-->
+<!--							<generatorName>spring</generatorName>-->
+<!--							<apiPackage>${project.groupId}.api</apiPackage>-->
+<!--							<modelPackage>${project.groupId}.model</modelPackage>-->
+<!--							<supportingFilesToGenerate>ApiUtil.java</supportingFilesToGenerate>-->
+<!--							<configOptions>-->
+<!--								<rxJava>true</rxJava>-->
+<!--								<rxJavaVersion>3</rxJavaVersion>-->
+<!--								<delegatePattern>true</delegatePattern>-->
+<!--								<reactive>true</reactive>-->
+<!--								<useOptional>false</useOptional>-->
+<!--								<useResponseEntity>false</useResponseEntity>-->
+<!--								<useOptional>false</useOptional>-->
+<!--							</configOptions>-->
+<!--						</configuration>-->
+<!--					</execution>-->
+<!--				</executions>-->
+<!--			</plugin>-->
 		</plugins>
 	</build>
 
