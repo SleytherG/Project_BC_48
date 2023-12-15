@@ -16,4 +16,8 @@ public interface DebtService {
   Single<Debt> updateDebt(String debtId, Debt debt);
 
   Completable deleteDebt(String debtId);
+
+  Flowable<Debt> getAllDebtsByClientId(String clientId);
+
+  Flowable<Debt> getAllDebtsByProductId(String productId);
 }

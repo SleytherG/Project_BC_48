@@ -19,4 +19,8 @@ public interface ClientService {
   Single<PersonalClient> savePersonalClient(PersonalClient personalClient);
 
   Single<EnterpriseClient> saveEnterpriseClient(EnterpriseClient enterpriseClient);
+
+  Single<PersonalClient> updatePersonalClient(String clientId, PersonalClient personalClient);
+
+  Single<EnterpriseClient> updateEnterpriseClient(String clientId, EnterpriseClient enterpriseClient);
 }

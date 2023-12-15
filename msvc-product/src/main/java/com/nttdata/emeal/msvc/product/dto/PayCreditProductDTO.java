@@ -1,4 +1,4 @@
-package com.nttdata.emeal.msvc.product.model;
+package com.nttdata.emeal.msvc.product.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,9 +11,9 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @Getter
 @Setter
-public class SavingsAccount extends BankAccount {
+public class PayCreditProductDTO {
 
-  private Integer maxTransactionLimit;
-
+  private BigDecimal amount;
+  private String productId;
 
 }

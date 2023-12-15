@@ -57,5 +57,15 @@ public class DebtServiceImpl implements DebtService {
       .doOnComplete(() -> log.debug("Debt deleted"));
   }
 
+  @Override
+  public Flowable<Debt> getAllDebtsByClientId(String clientId) {
+    return debtRepository.getDebtsByIdClient(clientId);
+  }
+
+  @Override
+  public Flowable<Debt> getAllDebtsByProductId(String productId) {
+    return debtRepository.getDebtsByIdProduct(productId);
+  }
+
 
 }

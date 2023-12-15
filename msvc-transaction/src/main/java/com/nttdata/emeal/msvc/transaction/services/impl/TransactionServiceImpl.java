@@ -54,4 +54,9 @@ public class TransactionServiceImpl implements TransactionService {
       .flatMapCompletable(transaction -> Completable.fromAction(() -> transactionRepository.deleteById(transactionId).subscribe()))
       .doOnComplete(() -> log.info("Transaction deleted"));
   }
+
+  @Override
+  public Flowable<Transaction> getAllTransactionsByProductId(String productId) {
+    return transactionRepository.getTransactionsByProductId(productId);
+  }
 }

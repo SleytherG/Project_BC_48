@@ -1,8 +1,10 @@
-package com.nttdata.emeal.msvc.debt.model;
+package com.nttdata.emeal.msvc.product.model;
 
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.math.BigDecimal;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -14,8 +16,7 @@ public class Debt {
 
   @Id
   private String id;
-  private String amount;
+  private BigDecimal amount;
   private String idProduct;
-  private String idClient;
   private String expirationDate;
 }

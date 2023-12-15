@@ -15,6 +15,11 @@ public class DebtController {
 
   public static final String DEBTS = "/debts";
   public static final String DEBT_ID = "/{debtId}";
+  public static final String PRODUCT_ID = "/{productId}";
+  public static final String CLIENT_ID = "/{clientId}";
+  public static final String GET_ALL_DEBTS_BY_CLIENT_ID = "/getAllDebtsByClientId";
+  public static final String GET_ALL_DEBTS_BY_PRODUCT_ID = "/getAllDebtsByProductId";
+
 
   @Autowired
   private DebtService debtService;
@@ -24,9 +29,19 @@ public class DebtController {
     return debtService.retrieveAllDebts();
   }
 
+  @GetMapping(value = GET_ALL_DEBTS_BY_CLIENT_ID  + CLIENT_ID,produces = {"application/json"})
+  public Flowable<Debt> getAllDebtsByClientId(@PathVariable String clientId) {
+    return debtService.getAllDebtsByClientId(clientId);
+  }
+
   @GetMapping(DEBT_ID)
   public Maybe<Debt> retrieveADebt(@PathVariable String debtId) {
     return debtService.retrieveADebt(debtId);
+  }
+
+  @GetMapping(GET_ALL_DEBTS_BY_PRODUCT_ID + PRODUCT_ID)
+  public Flowable<Debt> getAllDebtsByProductId(@PathVariable String productId) {
+    return debtService.getAllDebtsByProductId(productId);
   }
 
   @PostMapping(produces = {"application/json"})

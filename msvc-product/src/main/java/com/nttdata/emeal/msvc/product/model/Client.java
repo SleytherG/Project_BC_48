@@ -1,23 +1,22 @@
-package com.nttdata.emeal.msvc.client.model;
+package com.nttdata.emeal.msvc.product.model;
 
 import lombok.*;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @Builder
-@Document(value = "clients")
 public class Client {
 
-  @Id
   private String id;
   private String documentNumber;
   private String documentType;
   private String phone;
   private String email;
+  private String names;
+  private String surnames;
+  private String businessName;
   private String clientType;
 
 }

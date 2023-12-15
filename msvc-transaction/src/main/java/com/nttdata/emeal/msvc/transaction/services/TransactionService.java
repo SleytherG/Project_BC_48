@@ -13,4 +13,6 @@ public interface TransactionService {
   Single<Transaction> saveTransaction(Transaction transaction);
   Single<Transaction> updateTransaction(String transactionId, Transaction transaction);
   Completable deleteTransaction(String transactionId);
+
+  Flowable<Transaction> getAllTransactionsByProductId(String productId);
 }

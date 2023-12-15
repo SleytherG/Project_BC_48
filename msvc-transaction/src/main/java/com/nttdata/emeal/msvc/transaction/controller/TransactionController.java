@@ -16,6 +16,8 @@ public class TransactionController {
 
   public static final String TRANSACTIONS = "/transactions";
   public static final String TRANSACTION_ID = "/{transactionId}";
+  public static final String PRODUCT_ID = "/{productId}";
+  public static final String GET_ALL_TRANSACTIONS_BY_PRODUCT_ID = "/getAllTransactionsByProductId";
 
   @Autowired
   private TransactionService transactionsService;
@@ -43,6 +45,11 @@ public class TransactionController {
   @DeleteMapping(TRANSACTION_ID)
   public Completable deleteTransaction(@PathVariable String transactionId) {
     return transactionsService.deleteTransaction(transactionId);
+  }
+
+  @GetMapping(GET_ALL_TRANSACTIONS_BY_PRODUCT_ID + PRODUCT_ID)
+  public Flowable<Transaction> getAllTransactionsByProductId(@PathVariable String productId) {
+    return transactionsService.getAllTransactionsByProductId(productId);
   }
 
 }

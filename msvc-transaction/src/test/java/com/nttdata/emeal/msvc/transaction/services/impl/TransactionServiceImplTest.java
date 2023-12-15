@@ -39,7 +39,7 @@ class TransactionServiceImplTest {
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
-    transaction = new Transaction("1", new Date().toString(), DEPOSIT);
+    transaction = new Transaction("1", new Date().toString(), DEPOSIT, "123");
     emptyTransaction = new Transaction();
   }
 
