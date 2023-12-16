@@ -1,7 +1,6 @@
 package com.nttdata.emeal.msvc.product.controller;
 
-import com.nttdata.emeal.msvc.product.dto.ChargeConsumptionToCreditCardDTO;
-import com.nttdata.emeal.msvc.product.dto.PayCreditProductDTO;
+import com.nttdata.emeal.msvc.product.dto.*;
 import com.nttdata.emeal.msvc.product.model.*;
 import com.nttdata.emeal.msvc.product.service.ClientService;
 import com.nttdata.emeal.msvc.product.service.DebtService;
@@ -37,6 +36,10 @@ public class ProductController {
   public static final String PAY_CREDIT_PRODUCT = "/payCreditProduct";
   public static final String CHARGE_CONSUMPTION_TO_CREDIT_CARD = "/chargeConsumptionToCreditCard";
   public static final String GET_ALL_TRANSACTIONS_BY_PRODUCT_ID = "/getAllTransactionsByProductId";
+  public static final String CREATE_SAVINGS_ACCOUNT_VIP_CLIENT = "/createSavingsAccountVipClient";
+  public static final String CREATE_CHECKING_ACCOUNT_PYME_CLIENT = "/createCheckingAccountPymeClient";
+  public static final String BANK_TRANSFER_TO_OTHER_ACCOUNT = "/bankTransferToOtherAccount";
+  public static final String GET_ALL_COMMISSIONS_CURRENT_MONTH_BY_PRODUCT_ID = "/getAllCommissionsCurrentMonthByProductId";
 
   public static final String RETRIEVE_A_CLIENT = "/retrieveAClient";
 
@@ -59,6 +62,7 @@ public class ProductController {
   public Maybe<Product> retrieveAProduct(@PathVariable String productId) {
     return productService.retrieveAProduct(productId);
   }
+
 
   @PostMapping(value = CREATE_SAVINGS_ACCOUNT , produces = {"application/json"})
   public Single<SavingsAccount> createSavingsAccount(@RequestBody SavingsAccount savingsAccount) {
@@ -154,6 +158,32 @@ public class ProductController {
   public Flowable<Transaction> getAllTransactionsByProductId(@PathVariable String productId) {
     return productService.getAllTransactionsByProductId(productId);
   }
+
+  @PostMapping(CREATE_SAVINGS_ACCOUNT_VIP_CLIENT)
+  public Single<SavingsAccount> createSavingsAccountVipClient(@RequestBody SavingsAccountVipClientDTO savingsAccountVipClientDTO) {
+    return productService.createSavingsAccountVipClient(savingsAccountVipClientDTO);
+  }
+
+  @PostMapping(CREATE_CHECKING_ACCOUNT_PYME_CLIENT)
+  public Single<CheckingAccount> createCheckingAccountPymeClient(@RequestBody CheckingAccountPymeClientDTO checkingAccountPymeClientDTO) {
+    return productService.createCheckingAccountPymeClient(checkingAccountPymeClientDTO);
+  }
+
+  @PostMapping(BANK_TRANSFER_TO_OTHER_ACCOUNT)
+  public Completable bankTransferToOtherAccount(@RequestBody BankTransferToOtherAccountDTO bankTransferToOtherAccountDTO) {
+    return productService.bankTransferToOtherAccount(bankTransferToOtherAccountDTO);
+  }
+
+  @GetMapping(GET_ALL_COMMISSIONS_CURRENT_MONTH_BY_PRODUCT_ID + PRODUCT_ID)
+  public Flowable<Commission> getAllCommissionsCurrentMonthByProductId(@PathVariable String productId) {
+    return productService.getAllCommissionsCurrentMonthByProductId(productId);
+  }
+
+
+
+
+
+
 
 
 

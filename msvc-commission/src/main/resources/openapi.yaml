@@ -1,0 +1,110 @@
+openapi: 3.0.1
+info:
+  title: API Commission V1
+  description: API que realiza las operaciones CRUD de las comisiones de las transacciones del banco.
+  version: "1.0.1"
+servers:
+  - url: http://localhost:9195
+tags:
+  - name: Commission
+    description: Commission Controller
+paths:
+  /commissions:
+    get:
+      tags:
+        - Commission
+      summary: Retrieve all commissions.
+      operationId: retrieveAllCommissions
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Commissions'
+    post:
+      tags:
+        - Commission
+      summary: Save new commission
+      operationId: saveCommission
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Commission'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Commission'
+  /commissions/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: commission ID
+        schema:
+          type: string
+    get:
+      tags:
+        - Commission
+      summary: Retrieve a commission
+      operationId: retrieveACommission
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Commission'
+    put:
+      tags:
+        - Commission
+      summary: Update an existing commission
+      operationId: updateCommission
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Commission'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Commission'
+    delete:
+      tags:
+        - Commission
+      summary: Delete a commission
+      operationId: deleteCommission
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Commission'
+
+components:
+  schemas:
+    Commissions:
+      type: array
+      items:
+        $ref: '#/components/schemas/Commission'
+    Commission:
+      type: object
+      properties:
+        id:
+          type: string
+        clientId:
+          type: string
+        productId:
+          type: string
+        amount:
+          type: string

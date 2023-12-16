@@ -1,7 +1,6 @@
 package com.nttdata.emeal.msvc.product.service;
 
-import com.nttdata.emeal.msvc.product.dto.ChargeConsumptionToCreditCardDTO;
-import com.nttdata.emeal.msvc.product.dto.PayCreditProductDTO;
+import com.nttdata.emeal.msvc.product.dto.*;
 import com.nttdata.emeal.msvc.product.model.*;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Flowable;
@@ -57,4 +56,12 @@ public interface ProductService {
   Completable chargeConsumptionToCreditCard(ChargeConsumptionToCreditCardDTO chargeConsumptionToCreditCardDTO);
 
   Flowable<Transaction> getAllTransactionsByProductId(String productId);
+
+  Single<SavingsAccount> createSavingsAccountVipClient(SavingsAccountVipClientDTO savingsAccountVipClientDTO);
+
+  Single<CheckingAccount> createCheckingAccountPymeClient(CheckingAccountPymeClientDTO checkingAccountPymeClientDTO);
+
+  Completable bankTransferToOtherAccount(BankTransferToOtherAccountDTO bankTransferToOtherAccountDTO);
+
+  Flowable<Commission> getAllCommissionsCurrentMonthByProductId(String productId);
 }
