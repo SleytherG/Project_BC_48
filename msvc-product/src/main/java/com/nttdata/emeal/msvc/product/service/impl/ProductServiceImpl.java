@@ -2,6 +2,7 @@ package com.nttdata.emeal.msvc.product.service.impl;
 
 import com.netflix.discovery.converters.Auto;
 import com.nttdata.emeal.msvc.product.dto.*;
+import com.nttdata.emeal.msvc.product.exceptions.ExpiredDebtExpection;
 import com.nttdata.emeal.msvc.product.exceptions.InsufficientLimitException;
 import com.nttdata.emeal.msvc.product.exceptions.NotEnoughCreditLineException;
 import com.nttdata.emeal.msvc.product.exceptions.ProductNotFoundException;
@@ -23,6 +24,7 @@ import reactor.core.publisher.Mono;
 
 import javax.naming.InsufficientResourcesException;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
@@ -124,13 +126,24 @@ public class ProductServiceImpl implements ProductService {
   @Override
   @Transactional
   public Single<LoanBank> createLoanBank(LoanBank loanBank) {
+    validateDebtsOfAClient(loanBank.getIdClient());
     return productMapper.mapLoanBankAndSave(loanBank);
   }
 
   @Override
   @Transactional
   public Single<CreditCard> createCreditCard(CreditCard creditCard) {
+    validateDebtsOfAClient(creditCard.getIdClient());
     return productMapper.mapCreditCardAndSave(creditCard);
+  }
+
+  private void validateDebtsOfAClient(String idClient) {
+    Flowable<Debt> debtsOfClient = debtService.getAllDebtsByClientId(idClient);
+    debtsOfClient.subscribe(debt -> {
+      if ( debt.getExpirationDate().compareTo(LocalDate.now().toString()) > 0) {
+        throw new ExpiredDebtExpection("The client has an overdue debt.");
+      }
+    }).dispose();
   }
 
   @Override
@@ -322,5 +335,51 @@ public class ProductServiceImpl implements ProductService {
     return commissionService.getAllCommissionsCurrentMonthByProductId(productId);
   }
 
+  @Override
+  public Single<DebitCard> associateAccountToDebitCard(AssociateAccountToDebitCardDTO associateAccountToDebitCardDTO) {
+    return productMapper.mapDebitCardAndSave(associateAccountToDebitCardDTO);
+  }
+
+  @Override
+  public Completable payWithDebitCard(PayWithDebitCardDTO payWithDebitCardDTO) {
+    return Completable.fromAction(() -> {
+      BankAccount sourceProduct = (BankAccount) productRepository.findById(payWithDebitCardDTO.getSourceProductId()).blockingGet();
+      BankCredit targetProduct =  (BankCredit) productRepository.findById(payWithDebitCardDTO.getTargetProductId()).blockingGet();
+
+      sourceProduct.setBalance(sourceProduct.getBalance().subtract(payWithDebitCardDTO.getAmountToPay()));
+      targetProduct.setTotalDebt(targetProduct.getTotalDebt().subtract(payWithDebitCardDTO.getAmountToPay()));
+      productRepository.save(sourceProduct).subscribe();
+      productRepository.save(targetProduct).subscribe();
+
+    });
+  }
+
+  @Override
+  public Single<DebitCard> establishMainAccountToDebitCard(EstablishMainAccountToDebitCardDTO establishMainAccountToDebitCardDTO) {
+    return productRepository
+      .findById(establishMainAccountToDebitCardDTO.getDebitCardId())
+      .switchIfEmpty(Single.error(new ProductNotFoundException("Product not found with id: " + establishMainAccountToDebitCardDTO.getDebitCardId())))
+      .flatMap(product -> {
+        DebitCard debitCard = (DebitCard) product;
+        debitCard.setMainAccountProductId(establishMainAccountToDebitCardDTO.getMainAccountId());
+        return productRepository.save(debitCard);
+      });
+  }
+
+  @Override
+  public Flowable<Transaction> getLastTenTransactionsOfDebitCardOrCreditCard(String id) {
+    return null;
+  }
+
+  @Override
+  public Single<String> getBalanceOfMainAccount(String productId) {
+    return productRepository
+      .findById(productId)
+      .switchIfEmpty(Single.error(new ProductNotFoundException("Product not found with id: " + productId)))
+      .flatMap(product -> {
+        BankAccount bankAccount = (BankAccount) product;
+        return Single.just(bankAccount.getBalance());
+      }).map(object -> "Balance of main account is " + object);
+  }
 
 }

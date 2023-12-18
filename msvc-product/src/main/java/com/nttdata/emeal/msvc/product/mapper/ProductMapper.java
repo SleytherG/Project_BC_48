@@ -1,5 +1,6 @@
 package com.nttdata.emeal.msvc.product.mapper;
 
+import com.nttdata.emeal.msvc.product.dto.AssociateAccountToDebitCardDTO;
 import com.nttdata.emeal.msvc.product.dto.ProductDTO;
 import com.nttdata.emeal.msvc.product.model.*;
 import com.nttdata.emeal.msvc.product.repository.ProductRepository;
@@ -140,6 +141,12 @@ public class ProductMapper {
     creditCard.setMinPayment(creditCardDTO.getMinPayment());
     creditCard.setTotalPayment(creditCardDTO.getTotalPayment());
     return productRepository.save(creditCard);
+  }
+
+  public Single<DebitCard> mapDebitCardAndSave(AssociateAccountToDebitCardDTO dto) {
+    DebitCard debitCard = new DebitCard();
+    debitCard.addAccountProductIdToList(dto.getProductId());
+    return productRepository.save(debitCard);
   }
 
 

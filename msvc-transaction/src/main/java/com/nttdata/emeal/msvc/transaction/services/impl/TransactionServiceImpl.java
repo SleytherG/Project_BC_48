@@ -59,4 +59,11 @@ public class TransactionServiceImpl implements TransactionService {
   public Flowable<Transaction> getAllTransactionsByProductId(String productId) {
     return transactionRepository.getTransactionsByProductId(productId);
   }
+
+  @Override
+  public Flowable<Transaction> getLastTenTransactionsByProductId(String productId) {
+    return transactionRepository
+      .getTransactionsByProductId(productId)
+      .take(10);
+  }
 }

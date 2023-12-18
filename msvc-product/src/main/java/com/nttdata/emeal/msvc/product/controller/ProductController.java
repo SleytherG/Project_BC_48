@@ -40,6 +40,11 @@ public class ProductController {
   public static final String CREATE_CHECKING_ACCOUNT_PYME_CLIENT = "/createCheckingAccountPymeClient";
   public static final String BANK_TRANSFER_TO_OTHER_ACCOUNT = "/bankTransferToOtherAccount";
   public static final String GET_ALL_COMMISSIONS_CURRENT_MONTH_BY_PRODUCT_ID = "/getAllCommissionsCurrentMonthByProductId";
+  public static final String ASSOCIATE_ACCOUNT_TO_DEBIT_CARD = "/associateAccountToDebitCard";
+  public static final String PAY_WITH_DEBIT_CARD = "/payWithDebitCard";
+  public static final String ESTABLISH_MAIN_ACCOUNT_TO_DEBIT_CARD = "/establishMainAccountToDebitCard";
+  public static final String GET_LAST_TEN_TRANSACTIONS_OF_DEBIT_CARD_OR_CREDIT_CARD = "/getLastTenTransactionsOfDebitCardOrCreditCard";
+  public static final String GET_BALANCE_OF_MAIN_ACCOUNT = "/getBalanceOfMainAccount";
 
   public static final String RETRIEVE_A_CLIENT = "/retrieveAClient";
 
@@ -179,6 +184,30 @@ public class ProductController {
     return productService.getAllCommissionsCurrentMonthByProductId(productId);
   }
 
+  @PostMapping(ASSOCIATE_ACCOUNT_TO_DEBIT_CARD)
+  public Single<DebitCard> associateAccountToDebitCard(@RequestBody AssociateAccountToDebitCardDTO associateAccountToDebitCardDTO) {
+    return productService.associateAccountToDebitCard(associateAccountToDebitCardDTO);
+  }
+
+  @PostMapping(PAY_WITH_DEBIT_CARD)
+  public Completable payWithDebitCard(@RequestBody PayWithDebitCardDTO payWithDebitCardDTO) {
+    return productService.payWithDebitCard(payWithDebitCardDTO);
+  }
+
+  @PostMapping(ESTABLISH_MAIN_ACCOUNT_TO_DEBIT_CARD)
+  public Single<DebitCard> establishMainAccountToDebitCard(@RequestBody EstablishMainAccountToDebitCardDTO establishMainAccountToDebitCardDTO) {
+    return productService.establishMainAccountToDebitCard(establishMainAccountToDebitCardDTO);
+  }
+
+  @GetMapping(GET_LAST_TEN_TRANSACTIONS_OF_DEBIT_CARD_OR_CREDIT_CARD)
+  public Flowable<Transaction> getLastTenTransactionsOfDebitCardOrCreditCard(@RequestBody Product product) {
+    return productService.getLastTenTransactionsOfDebitCardOrCreditCard(product.getId());
+  }
+
+  @GetMapping(GET_BALANCE_OF_MAIN_ACCOUNT + PRODUCT_ID)
+  public Single<String> getBalanceOfMainAccount(@PathVariable String productId) {
+    return productService.getBalanceOfMainAccount(productId);
+  }
 
 
 

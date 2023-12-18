@@ -64,4 +64,14 @@ public interface ProductService {
   Completable bankTransferToOtherAccount(BankTransferToOtherAccountDTO bankTransferToOtherAccountDTO);
 
   Flowable<Commission> getAllCommissionsCurrentMonthByProductId(String productId);
+
+  Single<DebitCard> associateAccountToDebitCard(AssociateAccountToDebitCardDTO associateAccountToDebitCardDTO);
+
+  Completable payWithDebitCard(PayWithDebitCardDTO payWithDebitCardDTO);
+
+  Single<DebitCard> establishMainAccountToDebitCard(EstablishMainAccountToDebitCardDTO establishMainAccountToDebitCardDTO);
+
+  Flowable<Transaction> getLastTenTransactionsOfDebitCardOrCreditCard(String id);
+
+  Single<String> getBalanceOfMainAccount(String productId);
 }

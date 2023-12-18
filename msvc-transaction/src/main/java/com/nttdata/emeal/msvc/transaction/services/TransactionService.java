@@ -15,4 +15,6 @@ public interface TransactionService {
   Completable deleteTransaction(String transactionId);
 
   Flowable<Transaction> getAllTransactionsByProductId(String productId);
+
+  Flowable<Transaction> getLastTenTransactionsByProductId(String productId);
 }
