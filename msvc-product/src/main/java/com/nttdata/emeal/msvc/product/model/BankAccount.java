@@ -15,6 +15,7 @@ public class BankAccount extends Product {
   private String accountBankType;
   private BigDecimal balance;
   private Integer maxTransactionLimit = 20;
+  private Boolean isMainAccount;
 
   public void deposit(BigDecimal amount) {
     this.balance = this.balance.add(amount);

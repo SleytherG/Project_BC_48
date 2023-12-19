@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.nttdata.emeal.project.bc48</groupId>
+		<artifactId>project-bc48</artifactId>
+		<version>1.0-SNAPSHOT</version>
+	</parent>
+	<groupId>com.nttdata.emeal.msvc.yanki</groupId>
+	<artifactId>msvc-yanki</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>msvc-yanki</name>
+	<description>msvc-yanki</description>
+	<properties>
+		<java.version>11</java.version>
+		<spring-cloud.version>2021.0.3</spring-cloud.version>
+		<rxjava-version>3.1.5</rxjava-version>
+		<map-struct.version>1.5.5.Final</map-struct.version>
+		<openapi-generator.version>6.6.0</openapi-generator.version>
+		<jackson-nullable.version>0.2.6</jackson-nullable.version>
+		<springdoc-openapi.version>1.7.0</springdoc-openapi.version>
+		<archunit-junit5.version>1.1.0</archunit-junit5.version>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-mongodb-reactive</artifactId>
+		</dependency>
+
+		<!--        <dependency>-->
+		<!--            <groupId>org.springframework.boot</groupId>-->
+		<!--            <artifactId>spring-boot-starter-webflux</artifactId>-->
+		<!--        </dependency>-->
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-webflux</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>io.netty</groupId>
+			<artifactId>netty-all</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.mapstruct</groupId>
+			<artifactId>mapstruct</artifactId>
+			<version>${map-struct.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.reactivex.rxjava3</groupId>
+			<artifactId>rxjava</artifactId>
+			<version>3.1.8</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.openapitools</groupId>
+			<artifactId>jackson-databind-nullable</artifactId>
+			<version>${jackson-nullable.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>2.6.1</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>swagger-project</artifactId>
+					<groupId>io.swagger.core.v3</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+			<version>2.0.1.Final</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-webflux-core</artifactId>
+			<version>${springdoc-openapi.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-webflux-ui</artifactId>
+			<version>${springdoc-openapi.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>webjars-locator-core</artifactId>
+			<version>0.48</version>
+		</dependency>
+		<dependency>
+			<groupId>io.github.classgraph</groupId>
+			<artifactId>classgraph</artifactId>
+			<version>4.8.162</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.swagger.core.v3</groupId>
+			<artifactId>swagger-annotations</artifactId>
+			<version>2.2.19</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-commons</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.reactivex.rxjava3</groupId>
+			<artifactId>rxjava</artifactId>
+			<version>3.1.8</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<scope>runtime</scope>
+			<optional>true</optional>
+		</dependency>
+	</dependencies>
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>${spring-cloud.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<image>
+						<builder>paketobuildpacks/builder-jammy-base:latest</builder>
+					</image>
+					<excludes>
+						<exclude>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+						</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+			<!--            <plugin>-->
+			<!--                <groupId>org.openapitools</groupId>-->
+			<!--                <artifactId>openapi-generator-maven-plugin</artifactId>-->
+			<!--                <version>${openapi-generator.version}</version>-->
+			<!--                <executions>-->
+			<!--                    <execution>-->
+			<!--                        <goals>-->
+			<!--                            <goal>generate</goal>-->
+			<!--                        </goals>-->
+			<!--                        <configuration>-->
+			<!--                            <inputSpec>${project.basedir}/src/main/resources/openapi.yaml</inputSpec>-->
+			<!--                            <generatorName>spring</generatorName>-->
+			<!--                            <apiPackage>${project.groupId}.api</apiPackage>-->
+			<!--                            <modelPackage>${project.groupId}.model</modelPackage>-->
+			<!--                            <supportingFilesToGenerate>ApiUtil.java</supportingFilesToGenerate>-->
+			<!--                            <configOptions>-->
+			<!--                                <rxJava>true</rxJava>-->
+			<!--                                <rxJavaVersion>3</rxJavaVersion>-->
+			<!--                                <delegatePattern>true</delegatePattern>-->
+			<!--                                <reactive>true</reactive>-->
+			<!--                                <useOptional>false</useOptional>-->
+			<!--                                <useResponseEntity>false</useResponseEntity>-->
+			<!--                                <useOptional>false</useOptional>-->
+			<!--                            </configOptions>-->
+			<!--                        </configuration>-->
+			<!--                    </execution>-->
+			<!--                </executions>-->
+			<!--            </plugin>-->
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.8</version>
+				<configuration>
+					<excludes>
+						<exclude>**/target/**</exclude>
+						<exclude>**/dto*/**</exclude>
+						<exclude>**/entity*/**</exclude>
+						<exclude>**/mapper*/**</exclude>
+						<exclude>**/model*/**</exclude>
+						<exclude>**/services/**/*</exclude>
+					</excludes>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>report</id>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>jacoco-check</id>
+						<phase>test</phase>
+						<goals>
+							<goal>check</goal>
+						</goals>
+						<configuration>
+							<dataFile>${jacoco.ut.execution.data.file}</dataFile>
+							<rules>
+								<rule implementation="org.jacoco.maven.RuleConfiguration">
+									<element>BUNDLE</element>
+									<limits>
+										<limit implementation="org.jacoco.report.check.Limit">
+											<counter>INSTRUCTION</counter>
+											<value>COVEREDRATIO</value>
+											<minimum>0.7</minimum>
+										</limit>
+									</limits>
+								</rule>
+							</rules>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+
+
+	</build>
+
+</project>

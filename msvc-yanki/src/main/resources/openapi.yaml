@@ -1,0 +1,112 @@
+openapi: 3.0.1
+info:
+  title: API Yanki V1
+  description: API que realiza las operaciones CRUD del monedero movil Yanki del banco.
+  version: "1.0.1"
+servers:
+  - url: http://localhost:9196
+tags:
+  - name: Yankis
+    description: Yankis Controller
+paths:
+  /yankis:
+    get:
+      tags:
+        - Yanki
+      summary: Retrieve all yankis.
+      operationId: retrieveAllYankis
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Yanki'
+    post:
+      tags:
+        - Yanki
+      summary: Save new yanki
+      operationId: saveYanki
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Yanki'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Yanki'
+  /yankis/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: yanki ID
+        schema:
+          type: string
+    get:
+      tags:
+        - Yanki
+      summary: Retrieve a yanki
+      operationId: retrieveAYanki
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Yanki'
+    put:
+      tags:
+        - Yanki
+      summary: Update an existing yanki
+      operationId: updateYanki
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Yanki'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Yanki'
+    delete:
+      tags:
+        - Yanki
+      summary: Delete a yanki
+      operationId: deleteYanki
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Yanki'
+
+components:
+  schemas:
+    Yankis:
+      type: array
+      items:
+        $ref: '#/components/schemas/Yanki'
+    Yanki:
+      type: object
+      properties:
+        id:
+          type: string
+        documentNumber:
+          type: string
+        phoneNumber:
+          type: string
+        phoneImei:
+          type: string
+        email:
+          type: string

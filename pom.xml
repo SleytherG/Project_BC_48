@@ -36,6 +36,7 @@
         <module>msvc-client</module>
         <module>msvc-debt</module>
         <module>msvc-commission</module>
+        <module>msvc-yanki</module>
         <module>discovery-client</module>
         <module>api-gateway</module>
     </modules>
