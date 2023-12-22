@@ -23,25 +23,25 @@ public interface ProductService {
   Single<FixedTermAccount> createFixedTermAccount(ProductDTO productDTO);
 
   @Transactional
-  Single<LoanBank> createLoanBank(LoanBank loanBank);
+  Single<LoanBank> createLoanBank(ProductDTO productDTO);
 
   @Transactional
-  Single<CreditCard> createCreditCard(CreditCard creditCard);
+  Single<CreditCard> createCreditCard(ProductDTO productDTO);
 
   @Transactional
-  Single<SavingsAccount> updateSavingsAccount(String productId, SavingsAccount savingsAccount);
+  Single<SavingsAccount> updateSavingsAccount(String productId, ProductDTO productDTO);
 
   @Transactional
-  Single<CheckingAccount> updateCheckingAccount(String productId, CheckingAccount checkingAccount);
+  Single<CheckingAccount> updateCheckingAccount(String productId, ProductDTO productDTO);
 
   @Transactional
-  Single<FixedTermAccount> updateFixedTermAccount(String productId, FixedTermAccount fixedTermAccount);
+  Single<FixedTermAccount> updateFixedTermAccount(String productId, ProductDTO productDTO);
 
   @Transactional
-  Single<LoanBank> updateLoanBank(String productId, LoanBank loanBank);
+  Single<LoanBank> updateLoanBank(String productId, ProductDTO productDTO);
 
   @Transactional
-  Single<CreditCard> updateCreditCard(String productId, CreditCard creditCard);
+  Single<CreditCard> updateCreditCard(String productId, ProductDTO productDTO);
 
   Completable deleteAProduct(String productId);
 

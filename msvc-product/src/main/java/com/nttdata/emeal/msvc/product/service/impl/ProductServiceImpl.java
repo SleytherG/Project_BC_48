@@ -21,6 +21,7 @@ import org.webjars.NotFoundException;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -75,7 +76,7 @@ public class ProductServiceImpl implements ProductService {
 
   private Single<SavingsAccount> validateSavingsAccountAndSave(ProductDTO productDTO, List<ProductDTO> products) {
     Client client = clientService.retrieveAClient(productDTO.getIdClient()).blockingGet();
-    List<ProductDTO> savingsAccountFiltered = products.stream().filter(productFounded -> productFounded.getAccountBankType().equals(SAVINGS_ACCOUNT)).collect(Collectors.toList());
+    List<ProductDTO> savingsAccountFiltered = products.stream().filter(productFounded -> !productFounded.getProductType().equals(BANK_CREDIT) && productFounded.getAccountBankType().equals(SAVINGS_ACCOUNT)).collect(Collectors.toList());
     if (savingsAccountFiltered.isEmpty() &&
       !Objects.equals(Objects.requireNonNull(client).getClientType(), ENTERPRISE) &&
       Objects.requireNonNull(client).getClientType().equals(PERSONAL)
@@ -97,7 +98,7 @@ public class ProductServiceImpl implements ProductService {
 
   private Single<CheckingAccount> validateCheckingAccountAndSave(ProductDTO productDTO, List<ProductDTO> products) {
     Client client = clientService.retrieveAClient(productDTO.getIdClient()).blockingGet();
-    List<ProductDTO> checkingAccountFiltered = products.stream().filter(productFounded -> productFounded.getAccountBankType().equals(CHECKING_ACCOUNT)).collect(Collectors.toList());
+    List<ProductDTO> checkingAccountFiltered = products.stream().filter(productFounded -> !productFounded.getProductType().equals(BANK_CREDIT) && productFounded.getAccountBankType().equals(CHECKING_ACCOUNT)).collect(Collectors.toList());
     if (checkingAccountFiltered.isEmpty() &&
       Objects.requireNonNull(client).getClientType().equals(PERSONAL)) {
       return productMapper.mapCheckingAccountAndSave(productDTO);
@@ -116,7 +117,7 @@ public class ProductServiceImpl implements ProductService {
       .toList()
       .flatMap(products -> {
         Client client = clientService.retrieveAClient(productDTO.getIdClient()).blockingGet();
-        List<ProductDTO> fixedTermAccountFiltered = products.stream().filter(productFounded -> productFounded.getAccountBankType().equals(FIX_TERM_ACCOUNT)).collect(Collectors.toList());
+        List<ProductDTO> fixedTermAccountFiltered = products.stream().filter(productFounded -> !productFounded.getProductType().equals(BANK_CREDIT) && productFounded.getAccountBankType().equals(FIX_TERM_ACCOUNT)).collect(Collectors.toList());
         if (fixedTermAccountFiltered.isEmpty() &&
           !Objects.equals(Objects.requireNonNull(client).getClientType(), ENTERPRISE) &&
           Objects.requireNonNull(client).getClientType().equals(PERSONAL)
@@ -130,16 +131,16 @@ public class ProductServiceImpl implements ProductService {
 
   @Override
   @Transactional
-  public Single<LoanBank> createLoanBank(LoanBank loanBank) {
-    validateDebtsOfAClient(loanBank.getIdClient());
-    return productMapper.mapLoanBankAndSave(loanBank);
+  public Single<LoanBank> createLoanBank(ProductDTO productDTO) {
+    validateDebtsOfAClient(productDTO.getIdClient());
+    return productMapper.mapLoanBankAndSave(productDTO);
   }
 
   @Override
   @Transactional
-  public Single<CreditCard> createCreditCard(CreditCard creditCard) {
-    validateDebtsOfAClient(creditCard.getIdClient());
-    return productMapper.mapCreditCardAndSave(creditCard);
+  public Single<CreditCard> createCreditCard(ProductDTO productDTO) {
+    validateDebtsOfAClient(productDTO.getIdClient());
+    return productMapper.mapCreditCardAndSave(productDTO);
   }
 
   private void validateDebtsOfAClient(String idClient) {
@@ -153,47 +154,47 @@ public class ProductServiceImpl implements ProductService {
 
   @Override
   @Transactional
-  public Single<SavingsAccount> updateSavingsAccount(String productId, SavingsAccount savingsAccount) {
+  public Single<SavingsAccount> updateSavingsAccount(String productId, ProductDTO productDTO) {
     return productRepository
       .findById(productId)
       .switchIfEmpty(Single.error(new ProductNotFoundException("Savings account not found with id: " + productId)))
-      .flatMap(productFounded -> productMapper.mapSavingsAccountAndUpdate(productFounded, savingsAccount));
+      .flatMap(productFounded -> productMapper.mapSavingsAccountAndUpdate(productFounded, productDTO));
   }
 
   @Override
   @Transactional
-  public Single<CheckingAccount> updateCheckingAccount(String productId, CheckingAccount checkingAccount) {
+  public Single<CheckingAccount> updateCheckingAccount(String productId, ProductDTO productDTO) {
     return productRepository
       .findById(productId)
       .switchIfEmpty(Single.error(new ProductNotFoundException("Checking account not found with id: " + productId)))
-      .flatMap(productFounded -> productMapper.mapCheckingAccountAndUpdate(productFounded, checkingAccount));
+      .flatMap(productFounded -> productMapper.mapCheckingAccountAndUpdate(productFounded, productDTO));
   }
 
   @Override
   @Transactional
-  public Single<FixedTermAccount> updateFixedTermAccount(String productId, FixedTermAccount fixedTermAccount) {
+  public Single<FixedTermAccount> updateFixedTermAccount(String productId, ProductDTO productDTO) {
     return productRepository
       .findById(productId)
       .switchIfEmpty(Single.error(new ProductNotFoundException("Fixed term account not found with id: " + productId)))
-      .flatMap(productFounded -> productMapper.mapFixedTermAccountAndUpdate(productFounded, fixedTermAccount));
+      .flatMap(productFounded -> productMapper.mapFixedTermAccountAndUpdate(productFounded, productDTO));
   }
 
   @Override
   @Transactional
-  public Single<LoanBank> updateLoanBank(String productId, LoanBank loanBank) {
+  public Single<LoanBank> updateLoanBank(String productId, ProductDTO productDTO) {
     return productRepository
       .findById(productId)
       .switchIfEmpty(Single.error(new ProductNotFoundException("Loan bank not found with id: " + productId)))
-      .flatMap(productFounded -> productMapper.mapLoanBankAndUpdate(productFounded, loanBank));
+      .flatMap(productFounded -> productMapper.mapLoanBankAndUpdate(productFounded, productDTO));
   }
 
   @Override
   @Transactional
-  public Single<CreditCard> updateCreditCard(String productId, CreditCard creditCard) {
+  public Single<CreditCard> updateCreditCard(String productId, ProductDTO productDTO) {
     return productRepository
       .findById(productId)
       .switchIfEmpty(Single.error(new ProductNotFoundException("Credit card not found with id: " + productId)))
-      .flatMap(productFounded -> productMapper.mapCreditCardAndUpdate(productFounded, creditCard));
+      .flatMap(productFounded -> productMapper.mapCreditCardAndUpdate(productFounded, productDTO));
   }
 
   @Override
@@ -216,19 +217,16 @@ public class ProductServiceImpl implements ProductService {
   public Completable deposit(Deposit deposit) {
     return Completable.fromAction(() -> {
       BankAccount sourceProduct = (BankAccount) productRepository.findById(deposit.getSourceProductId()).blockingGet();
-      BankAccount targetProduct = (BankAccount) productRepository.findById(deposit.getTargetProductId()).blockingGet();
       assert sourceProduct != null;
-      sourceProduct.doATransaction();
       if ( sourceProduct.getMaxTransactionLimit() <= 0) {
         BigDecimal feeAmount = sourceProduct.transactionFee();
         commissionService.saveCommission(Commission.builder().productId(sourceProduct.getId()).amount(feeAmount).build()).subscribe();
       }
-      sourceProduct.withdrawal(deposit.getAmount());
-      assert targetProduct != null;
-      targetProduct.doATransaction();
-      targetProduct.deposit(deposit.getAmount());
+      sourceProduct.deposit(deposit.getAmount());
+      sourceProduct.doATransaction();
       productRepository.save(sourceProduct).subscribe();
-      productRepository.save(targetProduct).subscribe();
+      Transaction transaction = Transaction.builder().transactionType(DEPOSIT).dateTransaction(new Date().toString()).productId(deposit.getSourceProductId()).build();
+//      transactionService.saveATransaction(transaction);
     });
   }
 
@@ -238,32 +236,32 @@ public class ProductServiceImpl implements ProductService {
       .findProductById(withdrawal.getSourceProductId())
       .flatMapCompletable(sourceProduct -> {
         BankAccount bankAccount = (BankAccount) sourceProduct;
-        bankAccount.doATransaction();
         if ( bankAccount.getMaxTransactionLimit() <= 0) {
           BigDecimal feeAmount = bankAccount.transactionFee();
           commissionService.saveCommission(Commission.builder().productId(bankAccount.getId()).amount(feeAmount).build()).subscribe();
         }
         bankAccount.withdrawal(withdrawal.getAmount());
+        bankAccount.doATransaction();
         productRepository.save(bankAccount).subscribe();
+        Transaction transaction = Transaction.builder().transactionType(WITHDRAWAL).dateTransaction(new Date().toString()).productId(withdrawal.getSourceProductId()).build();
+//        transactionService.saveATransaction(transaction).subscribe();
         return Completable.complete();
       });
   }
 
   @Override
   public Completable payCreditProduct(PayCreditProductDTO payCreditProductDTO) {
-    return productRepository
-      .findById(payCreditProductDTO.getProductId())
-      .switchIfEmpty(Maybe.error(new ProductNotFoundException("Product not found with id: " + payCreditProductDTO.getProductId())))
-      .flatMapCompletable(product -> {
-        Flowable<Debt> debtsByProductId = debtService.getAllDebtsByProductId(product.getId());
-        debtsByProductId
-          .filter(debt -> debt.getIdProduct().equals(product.getId()))
-          .subscribe(debt -> {
-            debt.setAmount(debt.getAmount().subtract(payCreditProductDTO.getAmount()));
-            debtService.updateDebt(debt.getId(), debt).subscribe();
-          }).dispose();
-        return Completable.complete();
+    return Completable.fromAction(() -> {
+      Product product = productRepository.findById(payCreditProductDTO.getProductId()).blockingGet();
+      List<Debt> debtsByProductId = debtService.getAllDebtsByProductId(payCreditProductDTO.getProductId()).toList().blockingGet();
+      List<Debt> debtFiltered = debtsByProductId.stream().filter(debt -> debt.getIdProduct().equals(product.getId())).collect(Collectors.toList());
+      debtFiltered.forEach(debt -> {
+        if ( debt.getAmount().compareTo(BigDecimal.ZERO) > 0) {
+          debt.setAmount(debt.getAmount().subtract(payCreditProductDTO.getAmount()));
+          debtService.updateDebt(debt.getId(), debt).subscribe();
+        }
       });
+    });
   }
 
   @Override

@@ -15,12 +15,12 @@ public class CreditCard extends BankCredit {
 
   private String expirationDate;
   private String holderName;
-  private String totalLine;
+  private BigDecimal totalLine;
   private BigDecimal currentLine;
-  private BigDecimal currentBalance;
   private String cutOffDate;
   private String paymentDate;
   private BigDecimal minPayment;
   private BigDecimal totalPayment;
-
 }
+
+

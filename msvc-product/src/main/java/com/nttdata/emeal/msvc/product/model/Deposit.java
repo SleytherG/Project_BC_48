@@ -13,6 +13,5 @@ public class Deposit {
 
   private BigDecimal amount;
   private String sourceProductId;
-  private String targetProductId;
 
 }

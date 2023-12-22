@@ -1,12 +1,17 @@
 package com.nttdata.emeal.msvc.product.service.impl;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nttdata.emeal.msvc.product.model.Debt;
 import com.nttdata.emeal.msvc.product.model.Transaction;
 import com.nttdata.emeal.msvc.product.service.TransactionService;
 import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.core.Single;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.adapter.rxjava.RxJava3Adapter;
+
+import java.util.Map;
 
 @Service
 public class TransactionServiceImpl implements TransactionService  {
@@ -42,5 +47,23 @@ public class TransactionServiceImpl implements TransactionService  {
         .retrieve()
         .bodyToFlux(Transaction.class)
     );
+  }
+
+  @Override
+  public Single<Transaction> saveATransaction(Transaction transaction) {
+    Map<String, Object> transactionMap = convertToMap(transaction);
+    return RxJava3Adapter.monoToSingle(
+      webClient
+        .post()
+        .uri("")
+        .body(transactionMap, Transaction.class)
+        .retrieve()
+        .bodyToMono(Transaction.class)
+    );
+  }
+
+  public static Map<String, Object> convertToMap(Object object) {
+    ObjectMapper objectMapper = new ObjectMapper();
+    return objectMapper.convertValue(object, new TypeReference<Map<String, Object>>() {});
   }
 }

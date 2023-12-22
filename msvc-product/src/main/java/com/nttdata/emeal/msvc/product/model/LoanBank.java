@@ -14,4 +14,5 @@ public class LoanBank extends BankCredit {
 
   private String amount;
   private String dateCreated;
+
 }

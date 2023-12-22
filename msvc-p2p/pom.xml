@@ -8,7 +8,7 @@
 		<version>1.0-SNAPSHOT</version>
 	</parent>
 	<groupId>com.nttdata.emeal.msvc.p2p</groupId>
-	<artifactId>msvc-bootcoin</artifactId>
+	<artifactId>msvc-p2p</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>msvc-p2p</name>
 	<description>msvc-p2p</description>

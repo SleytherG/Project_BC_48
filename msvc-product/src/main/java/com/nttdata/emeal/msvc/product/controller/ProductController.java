@@ -85,38 +85,38 @@ public class ProductController {
   }
 
   @PostMapping(value = CREATE_LOAN_BANK, produces = {"application/json"})
-  public Single<LoanBank> createLoanBank(@RequestBody LoanBank loanBank) {
-    return productService.createLoanBank(loanBank);
+  public Single<LoanBank> createLoanBank(@RequestBody ProductDTO productDTO) {
+    return productService.createLoanBank(productDTO);
   }
 
   @PostMapping(value = CREATE_CREDIT_CARD, produces = {"application/json"})
-  public Single<CreditCard> createCreditCard(@RequestBody CreditCard creditCard) {
-    return productService.createCreditCard(creditCard);
+  public Single<CreditCard> createCreditCard(@RequestBody ProductDTO productDTO) {
+    return productService.createCreditCard(productDTO);
   }
 
   @PutMapping(UPDATE_SAVINGS_ACCOUNT + PRODUCT_ID)
-  public Single<SavingsAccount> updateSavingsAccount(@PathVariable String productId, @RequestBody SavingsAccount savingsAccount) {
-    return productService.updateSavingsAccount(productId, savingsAccount);
+  public Single<SavingsAccount> updateSavingsAccount(@PathVariable String productId, @RequestBody ProductDTO productDTO) {
+    return productService.updateSavingsAccount(productId, productDTO);
   }
 
   @PutMapping(UPDATE_CHECKING_ACCOUNT + PRODUCT_ID)
-  public Single<CheckingAccount> updateCheckingAccount(@PathVariable String productId, @RequestBody CheckingAccount checkingAccount) {
-    return productService.updateCheckingAccount(productId, checkingAccount);
+  public Single<CheckingAccount> updateCheckingAccount(@PathVariable String productId, @RequestBody ProductDTO productDTO) {
+    return productService.updateCheckingAccount(productId, productDTO);
   }
 
   @PutMapping(UPDATE_FIXED_TERM_ACCOUNT +  PRODUCT_ID)
-  public Single<FixedTermAccount> updateFixedTermAccount(@PathVariable String productId, @RequestBody FixedTermAccount fixedTermAccount) {
-    return productService.updateFixedTermAccount(productId, fixedTermAccount);
+  public Single<FixedTermAccount> updateFixedTermAccount(@PathVariable String productId, @RequestBody ProductDTO productDTO) {
+    return productService.updateFixedTermAccount(productId, productDTO);
   }
 
   @PutMapping(UPDATE_LOAN_BANK + PRODUCT_ID)
-  public Single<LoanBank> updateLoanBank(@PathVariable String productId, @RequestBody LoanBank loanBank) {
-    return productService.updateLoanBank(productId, loanBank);
+  public Single<LoanBank> updateLoanBank(@PathVariable String productId, @RequestBody ProductDTO productDTO) {
+    return productService.updateLoanBank(productId, productDTO);
   }
 
   @PutMapping( UPDATE_CREDIT_CARD + PRODUCT_ID)
-  public Single<CreditCard> updateCreditCard(@PathVariable String productId, @RequestBody CreditCard creditCard) {
-    return productService.updateCreditCard(productId, creditCard);
+  public Single<CreditCard> updateCreditCard(@PathVariable String productId, @RequestBody ProductDTO productDTO) {
+    return productService.updateCreditCard(productId, productDTO);
   }
 
   @DeleteMapping(PRODUCT_ID)
@@ -208,17 +208,5 @@ public class ProductController {
   public Single<String> getBalanceOfMainAccount(@PathVariable String productId) {
     return productService.getBalanceOfMainAccount(productId);
   }
-
-
-
-
-
-
-
-
-
-
-
-
 
 }

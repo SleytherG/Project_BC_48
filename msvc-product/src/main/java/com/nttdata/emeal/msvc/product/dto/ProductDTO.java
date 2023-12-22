@@ -25,4 +25,15 @@ public class ProductDTO {
   private List<String> holders;
   private List<String> signatories;
   private String specificDay;
+  private String amount;
+  private String dateCreated;
+  private BigDecimal totalDebt;
+  private String expirationDate;
+  private String holderName;
+  private BigDecimal totalLine;
+  private BigDecimal currentLine;
+  private String cutOffDate;
+  private String paymentDate;
+  private BigDecimal minPayment;
+  private BigDecimal totalPayment;
 }
