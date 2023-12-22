@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 public class YankiDTO {
 
   private String documentNumber;
+  private String documentType;
   private String phoneNumber;
   private String phoneImei;
   private String email;

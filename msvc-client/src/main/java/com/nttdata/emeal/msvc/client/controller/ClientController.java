@@ -1,6 +1,7 @@
 package com.nttdata.emeal.msvc.client.controller;
 
 
+import com.nttdata.emeal.msvc.client.dto.ClientDTO;
 import com.nttdata.emeal.msvc.client.model.Client;
 import com.nttdata.emeal.msvc.client.model.EnterpriseClient;
 import com.nttdata.emeal.msvc.client.model.PersonalClient;

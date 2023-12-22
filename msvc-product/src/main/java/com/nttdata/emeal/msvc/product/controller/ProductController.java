@@ -70,18 +70,18 @@ public class ProductController {
 
 
   @PostMapping(value = CREATE_SAVINGS_ACCOUNT , produces = {"application/json"})
-  public Single<SavingsAccount> createSavingsAccount(@RequestBody SavingsAccount savingsAccount) {
-   return productService.createSavingsAccount(savingsAccount);
+  public Single<SavingsAccount> createSavingsAccount(@RequestBody ProductDTO productDTO) {
+   return productService.createSavingsAccount(productDTO);
   }
 
   @PostMapping(value = CREATE_CHECKING_ACCOUNT,produces = {"application/json"})
-  public Single<CheckingAccount> createCheckingAccount(@RequestBody CheckingAccount checkingAccount) {
-    return productService.createCheckingAccount(checkingAccount);
+  public Single<CheckingAccount> createCheckingAccount(@RequestBody ProductDTO productDTO) {
+    return productService.createCheckingAccount(productDTO);
   }
 
   @PostMapping(value = CREATE_FIXED_TERM_ACCOUNT, produces = {"application/json"})
-  public Single<FixedTermAccount> createFixedTermAccount(@RequestBody FixedTermAccount fixedTermAccount) {
-    return productService.createFixedTermAccount(fixedTermAccount);
+  public Single<FixedTermAccount> createFixedTermAccount(@RequestBody ProductDTO productDTO) {
+    return productService.createFixedTermAccount(productDTO);
   }
 
   @PostMapping(value = CREATE_LOAN_BANK, produces = {"application/json"})
@@ -125,7 +125,7 @@ public class ProductController {
   }
 
   @GetMapping(GET_ALL_PRODUCTS_BY_CLIENT_ID + CLIENT_ID)
-  public Flowable<Product> getAllProductsByClientId(@PathVariable String clientId) {
+  public Flowable<ProductDTO> getAllProductsByClientId(@PathVariable String clientId) {
     return productService.getAllProductsByClientId(clientId);
   }
 

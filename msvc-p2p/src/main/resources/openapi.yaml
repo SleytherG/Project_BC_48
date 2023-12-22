@@ -1,0 +1,323 @@
+openapi: 3.0.1
+info:
+  title: API P2P V1
+  description: API que realiza las operaciones CRUD del servicio P2P del banco.
+  version: "1.0.1"
+servers:
+  - url: http://localhost:9197/p2p
+tags:
+  - name: P2P Wallets
+    description: Wallet Controller
+  - name: P2P CryptoCurrency
+    description: CryptoCurrency Controller
+  - name: P2P CryptoCurrencyTransaction
+    description: CryptoCurrencyTransaction Controller
+paths:
+  /wallets:
+    get:
+      tags:
+        - P2P Wallets
+      summary: Retrieve all wallets.
+      operationId: retrieveAllWallets
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Wallet'
+    post:
+      tags:
+        - P2P Wallets
+      summary: Save new wallet
+      operationId: saveAWallet
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Wallet'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Wallet'
+  /wallets/{walletId}:
+    parameters:
+      - name: walletId
+        in: path
+        required: true
+        description: wallet ID
+        schema:
+          type: string
+    get:
+      tags:
+        - P2P Wallets
+      summary: Retrieve a wallet
+      operationId: retrieveAWallet
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Wallet'
+    put:
+      tags:
+        - P2P Wallets
+      summary: Update an existing wallet
+      operationId: updateAWallet
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Wallet'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Wallet'
+    delete:
+      tags:
+        - P2P Wallets
+      summary: Delete a wallet
+      operationId: deleteAWallet
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Wallet'
+
+  /cryptoCurrencies:
+    get:
+      tags:
+        - P2P CryptoCurrency
+      summary: Retrieve all cryptoCurrency.
+      operationId: retrieveAllCryptoCurrencies
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CryptoCurrencies'
+    post:
+      tags:
+        - P2P CryptoCurrency
+      summary: Save new cryptoCurrency
+      operationId: saveACryptoCurrency
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CryptoCurrency'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CryptoCurrency'
+  /cryptoCurrencies/{cryptoCurrencyId}:
+    parameters:
+      - name: cryptoCurrencyId
+        in: path
+        required: true
+        description: cryptoCurrency ID
+        schema:
+          type: string
+    get:
+      tags:
+        - P2P CryptoCurrency
+      summary: Retrieve a cryptoCurrency
+      operationId: retrieveACryptoCurrency
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CryptoCurrency'
+    put:
+      tags:
+        - P2P CryptoCurrency
+      summary: Update an existing CryptoCurrency
+      operationId: updateACryptoCurrency
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CryptoCurrency'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CryptoCurrency'
+    delete:
+      tags:
+        - P2P CryptoCurrency
+      summary: Delete a cryptoCurrency
+      operationId: deleteACryptoCurrency
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CryptoCurrency'
+
+  /cryptoCurrencyTransactions:
+    get:
+      tags:
+        - P2P CryptoCurrencyTransaction
+      summary: Retrieve all CryptoCurrencyTransaction.
+      operationId: retrieveAllCryptoCurrencyTransactions
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CryptoCurrencyTransactions'
+    post:
+      tags:
+        - P2P CryptoCurrencyTransaction
+      summary: Save new CryptoCurrencyTransaction
+      operationId: saveACryptoCurrencyTransaction
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CryptoCurrencyTransaction'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CryptoCurrencyTransaction'
+  /cryptoCurrencyTransactions/{cryptoCurrencyTransactionId}:
+    parameters:
+      - name: cryptoCurrencyTransactionId
+        in: path
+        required: true
+        description: cryptoCurrencyTransaction ID
+        schema:
+          type: string
+    get:
+      tags:
+        - P2P CryptoCurrencyTransaction
+      summary: Retrieve a cryptoCurrencyTransaction
+      operationId: retrieveACryptoCurrencyTransaction
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CryptoCurrencyTransaction'
+    put:
+      tags:
+        - P2P CryptoCurrencyTransaction
+      summary: Update an existing CryptoCurrencyTransaction
+      operationId: updateACryptoCurrencyTransaction
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CryptoCurrencyTransaction'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CryptoCurrencyTransaction'
+    delete:
+      tags:
+        - P2P CryptoCurrencyTransaction
+      summary: Delete a CryptoCurrencyTransaction
+      operationId: deleteACryptoCurrencyTransaction
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CryptoCurrencyTransaction'
+
+components:
+  schemas:
+    Wallets:
+      type: array
+      items:
+        $ref: '#/components/schemas/Wallet'
+    Wallet:
+      type: object
+      properties:
+        id:
+          type: string
+        documentNumber:
+          type: string
+        documentType:
+          type: string
+        phoneNumber:
+          type: string
+        email:
+          type: string
+        cryptocurrencies:
+          type: array
+          items:
+            $ref: "#/components/schemas/CryptoCurrency"
+    CryptoCurrencies:
+      type: array
+      items:
+        $ref: "#/components/schemas/CryptoCurrency"
+    CryptoCurrency:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        purchaseRate:
+          type: string
+        salesRate:
+          type: string
+    CryptoCurrencyTransactions:
+      type: array
+      items:
+        $ref: "#/components/schemas/CryptoCurrencyTransaction"
+    CryptoCurrencyTransaction:
+      type: object
+      properties:
+        id:
+          type: string
+        amount:
+          type: number
+        paymentMode:
+          type: string
+        transactionNumber:
+          type: string
+        transactionDate:
+          type: string
+
+
+
+
+
+
+

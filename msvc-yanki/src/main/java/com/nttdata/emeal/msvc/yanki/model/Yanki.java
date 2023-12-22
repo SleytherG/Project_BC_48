@@ -18,6 +18,7 @@ public class Yanki {
   @Id
   private String id;
   private String documentNumber;
+  private String documentType;
   private String phoneNumber;
   private String phoneImei;
   private String email;

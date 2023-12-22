@@ -1,5 +1,6 @@
 package com.nttdata.emeal.msvc.client.mapper;
 
+import com.nttdata.emeal.msvc.client.dto.ClientDTO;
 import com.nttdata.emeal.msvc.client.model.Client;
 import com.nttdata.emeal.msvc.client.model.EnterpriseClient;
 import com.nttdata.emeal.msvc.client.model.PersonalClient;
@@ -59,6 +60,17 @@ public class ClientMapper {
     enterpriseClient.setBusinessName(enterpriseClientDTO.getBusinessName());
     enterpriseClient.setClientType(ENTERPRISE);
     return enterpriseClient;
+  }
+
+  public ClientDTO mapClientToClientDTO(Client client) {
+    ClientDTO clientDTO = new ClientDTO();
+    clientDTO.setId(client.getId());
+    clientDTO.setDocumentNumber(client.getDocumentNumber());
+    clientDTO.setDocumentType(client.getDocumentType());
+    clientDTO.setPhone(client.getPhone());
+    clientDTO.setPhone(client.getPhone());
+    clientDTO.setEmail(client.getEmail());
+    return clientDTO;
   }
 
 

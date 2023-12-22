@@ -12,6 +12,7 @@ public class YankiMapper {
   public Yanki mapYankiDTOToYanki(YankiDTO yankiDTO) {
     return Yanki.builder()
       .documentNumber(yankiDTO.getDocumentNumber())
+      .documentType(yankiDTO.getDocumentType())
       .phoneNumber(yankiDTO.getPhoneNumber())
       .phoneImei(yankiDTO.getPhoneImei())
       .email(yankiDTO.getEmail())

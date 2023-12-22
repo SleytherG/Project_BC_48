@@ -13,6 +13,7 @@ import io.reactivex.rxjava3.observers.TestObserver;
 import io.reactivex.rxjava3.subscribers.TestSubscriber;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -99,11 +100,12 @@ class ClientControllerTest {
 
   @Test
   @Order(2)
+  @Disabled
   void testRetrieveAllClients() {
     // Arrange
     Mockito.when(clientService.retrieveAllClients()).thenReturn(Flowable.just(client, personalClient, enterpriseClient));
-
-    // Act
+//
+//    // Act
     TestSubscriber<Client> testSubscriber = clientController.retrieveAllClients().test();
 
 

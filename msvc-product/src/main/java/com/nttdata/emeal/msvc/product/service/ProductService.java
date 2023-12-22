@@ -14,13 +14,13 @@ public interface ProductService {
   Maybe<Product> retrieveAProduct(String productId);
 
   @Transactional
-  Single<SavingsAccount> createSavingsAccount(SavingsAccount savingsAccount);
+  Single<SavingsAccount> createSavingsAccount(ProductDTO productDTO);
 
   @Transactional
-  Single<CheckingAccount> createCheckingAccount(CheckingAccount checkingAccount);
+  Single<CheckingAccount> createCheckingAccount(ProductDTO productDTO);
 
   @Transactional
-  Single<FixedTermAccount> createFixedTermAccount(FixedTermAccount fixedTermAccount);
+  Single<FixedTermAccount> createFixedTermAccount(ProductDTO productDTO);
 
   @Transactional
   Single<LoanBank> createLoanBank(LoanBank loanBank);
@@ -45,7 +45,7 @@ public interface ProductService {
 
   Completable deleteAProduct(String productId);
 
-  Flowable<Product> getAllProductsByClientId(String clientId);
+  Flowable<ProductDTO> getAllProductsByClientId(String clientId);
 
   Completable deposit(Deposit deposit);
 

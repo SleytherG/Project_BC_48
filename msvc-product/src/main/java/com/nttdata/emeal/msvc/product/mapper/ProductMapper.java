@@ -5,6 +5,7 @@ import com.nttdata.emeal.msvc.product.dto.ProductDTO;
 import com.nttdata.emeal.msvc.product.model.*;
 import com.nttdata.emeal.msvc.product.repository.ProductRepository;
 import io.reactivex.rxjava3.core.Single;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,13 +18,14 @@ public class ProductMapper {
   @Autowired
   private ProductRepository productRepository;
 
-  public Single<SavingsAccount> mapSavingsAccountAndSave(SavingsAccount savingsAccountDTO) {
+  public Single<SavingsAccount> mapSavingsAccountAndSave(ProductDTO productDTO) {
     SavingsAccount savingsAccount = new SavingsAccount();
-    savingsAccount.setIdClient(savingsAccountDTO.getIdClient());
+    savingsAccount.setIdClient(productDTO.getIdClient());
     savingsAccount.setProductType(BANK_ACCOUNT);
     savingsAccount.setAccountBankType(SAVINGS_ACCOUNT);
-    savingsAccount.setBalance(savingsAccountDTO.getBalance());
-    savingsAccount.setMaxTransactionLimit(savingsAccountDTO.getMaxTransactionLimit() != null ? savingsAccountDTO.getMaxTransactionLimit() : 20);
+    savingsAccount.setBalance(productDTO.getBalance());
+    savingsAccount.setMaxTransactionLimit(productDTO.getMaxTransactionLimit() != null ? productDTO.getMaxTransactionLimit() : 20);
+    savingsAccount.setIsMainAccount(productDTO.getIsMainAccount());
     return productRepository.save(savingsAccount);
   }
 
@@ -35,18 +37,20 @@ public class ProductMapper {
     savingsAccount.setAccountBankType(SAVINGS_ACCOUNT);
     savingsAccount.setBalance(savingsAccountDTO.getBalance());
     savingsAccount.setMaxTransactionLimit(savingsAccountDTO.getMaxTransactionLimit() != null ? savingsAccountDTO.getMaxTransactionLimit() : 20);
+    savingsAccount.setIsMainAccount(savingsAccountDTO.getIsMainAccount());
     return productRepository.save(savingsAccount);
   }
 
-  public Single<CheckingAccount> mapCheckingAccountAndSave(CheckingAccount checkingAccountDTO) {
+  public Single<CheckingAccount> mapCheckingAccountAndSave(ProductDTO productDTO) {
     CheckingAccount checkingAccount = new CheckingAccount();
-    checkingAccount.setIdClient(checkingAccountDTO.getIdClient());
+    checkingAccount.setIdClient(productDTO.getIdClient());
     checkingAccount.setProductType(BANK_ACCOUNT);
     checkingAccount.setAccountBankType(CHECKING_ACCOUNT);
-    checkingAccount.setBalance(checkingAccountDTO.getBalance());
+    checkingAccount.setBalance(productDTO.getBalance());
     checkingAccount.setMaintenanceFee("3.50");
-    checkingAccount.setHolders(checkingAccountDTO.getHolders());
-    checkingAccount.setSignatories(checkingAccountDTO.getSignatories());
+    checkingAccount.setHolders(productDTO.getHolders());
+    checkingAccount.setSignatories(productDTO.getSignatories());
+    checkingAccount.setIsMainAccount(productDTO.getIsMainAccount());
     return productRepository.save(checkingAccount);
   }
 
@@ -60,16 +64,18 @@ public class ProductMapper {
     checkingAccount.setMaintenanceFee("3.50");
     checkingAccount.setHolders(checkingAccountDTO.getHolders());
     checkingAccount.setSignatories(checkingAccountDTO.getSignatories());
+    checkingAccount.setIsMainAccount(checkingAccountDTO.getIsMainAccount());
     return productRepository.save(checkingAccount);
   }
 
-  public Single<FixedTermAccount> mapFixedTermAccountAndSave(FixedTermAccount fixedTermAccountDTO) {
+  public Single<FixedTermAccount> mapFixedTermAccountAndSave(ProductDTO productDTO) {
     FixedTermAccount fixedTermAccount = new FixedTermAccount();
-    fixedTermAccount.setIdClient(fixedTermAccountDTO.getIdClient());
+    fixedTermAccount.setIdClient(productDTO.getIdClient());
     fixedTermAccount.setProductType(BANK_ACCOUNT);
     fixedTermAccount.setAccountBankType(FIX_TERM_ACCOUNT);
-    fixedTermAccount.setBalance(fixedTermAccountDTO.getBalance());
-    fixedTermAccount.setSpecificDay(fixedTermAccountDTO.getSpecificDay());
+    fixedTermAccount.setBalance(productDTO.getBalance());
+    fixedTermAccount.setSpecificDay(productDTO.getSpecificDay());
+    fixedTermAccount.setIsMainAccount(productDTO.getIsMainAccount());
     return productRepository.save(fixedTermAccount);
   }
 
@@ -82,6 +88,7 @@ public class ProductMapper {
     fixedTermAccount.setAccountBankType(FIX_TERM_ACCOUNT);
     fixedTermAccount.setBalance(fixedTermAccountDTO.getBalance());
     fixedTermAccount.setSpecificDay(fixedTermAccountDTO.getSpecificDay());
+    fixedTermAccount.setIsMainAccount(fixedTermAccountDTO.getIsMainAccount());
     return productRepository.save(fixedTermAccount);
   }
 
@@ -147,6 +154,12 @@ public class ProductMapper {
     DebitCard debitCard = new DebitCard();
     debitCard.addAccountProductIdToList(dto.getProductId());
     return productRepository.save(debitCard);
+  }
+
+  public Product mapProductDTOToProduct(ProductDTO productDTO) {
+    Product product = new Product();
+    BeanUtils.copyProperties(productDTO, product);
+    return product;
   }
 
 

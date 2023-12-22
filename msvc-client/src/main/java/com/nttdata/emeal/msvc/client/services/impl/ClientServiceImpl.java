@@ -1,6 +1,5 @@
 package com.nttdata.emeal.msvc.client.services.impl;
 
-import com.netflix.discovery.converters.Auto;
 import com.nttdata.emeal.msvc.client.exceptions.ClientNotFoundException;
 import com.nttdata.emeal.msvc.client.mapper.ClientMapper;
 import com.nttdata.emeal.msvc.client.model.Client;
@@ -17,9 +16,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import static com.nttdata.emeal.msvc.client.utils.Constants.ENTERPRISE;
-import static com.nttdata.emeal.msvc.client.utils.Constants.PERSONAL;
-
 @Slf4j
 @Service
 public class ClientServiceImpl implements ClientService {
@@ -30,9 +26,11 @@ public class ClientServiceImpl implements ClientService {
   @Autowired
   private ClientMapper clientMapper;
 
+
   @Override
   public Flowable<Client> retrieveAllClients() {
-    return clientRepository.findAll();
+    return clientRepository
+      .findAll();
   }
 
   @Override

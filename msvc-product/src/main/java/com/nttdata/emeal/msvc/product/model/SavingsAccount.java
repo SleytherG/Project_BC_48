@@ -13,7 +13,5 @@ import java.math.BigDecimal;
 @Setter
 public class SavingsAccount extends BankAccount {
 
-  private Integer maxTransactionLimit;
-
-
+  private String balanceAccount;
 }

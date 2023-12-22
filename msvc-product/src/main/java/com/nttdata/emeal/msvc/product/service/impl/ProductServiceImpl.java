@@ -1,9 +1,7 @@
 package com.nttdata.emeal.msvc.product.service.impl;
 
-import com.netflix.discovery.converters.Auto;
 import com.nttdata.emeal.msvc.product.dto.*;
 import com.nttdata.emeal.msvc.product.exceptions.ExpiredDebtExpection;
-import com.nttdata.emeal.msvc.product.exceptions.InsufficientLimitException;
 import com.nttdata.emeal.msvc.product.exceptions.NotEnoughCreditLineException;
 import com.nttdata.emeal.msvc.product.exceptions.ProductNotFoundException;
 import com.nttdata.emeal.msvc.product.mapper.ProductMapper;
@@ -20,13 +18,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.webjars.NotFoundException;
-import reactor.core.publisher.Mono;
 
-import javax.naming.InsufficientResourcesException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import static com.nttdata.emeal.msvc.product.utils.Constants.*;
 
@@ -68,21 +65,22 @@ public class ProductServiceImpl implements ProductService {
 
   @Override
   @Transactional
-  public Single<SavingsAccount> createSavingsAccount(SavingsAccount savingsAccount) {
+  public Single<SavingsAccount> createSavingsAccount(ProductDTO productDTO) {
     return productRepository
-      .getProductsByIdClient(savingsAccount.getIdClient())
+      .getProductsByIdClient(productDTO.getIdClient())
       .toList()
       .observeOn(Schedulers.io())
-      .flatMap(products -> getSavingsAccountSingle(savingsAccount, products));
+      .flatMap(products -> validateSavingsAccountAndSave(productDTO, products));
   }
 
-  private Single<SavingsAccount> getSavingsAccountSingle(SavingsAccount savingsAccount, List<Product> products) {
-    Client client = clientService.retrieveAClient(savingsAccount.getIdClient()).blockingGet();
-    if (products.isEmpty() &&
+  private Single<SavingsAccount> validateSavingsAccountAndSave(ProductDTO productDTO, List<ProductDTO> products) {
+    Client client = clientService.retrieveAClient(productDTO.getIdClient()).blockingGet();
+    List<ProductDTO> savingsAccountFiltered = products.stream().filter(productFounded -> productFounded.getAccountBankType().equals(SAVINGS_ACCOUNT)).collect(Collectors.toList());
+    if (savingsAccountFiltered.isEmpty() &&
       !Objects.equals(Objects.requireNonNull(client).getClientType(), ENTERPRISE) &&
       Objects.requireNonNull(client).getClientType().equals(PERSONAL)
     ) {
-      return productMapper.mapSavingsAccountAndSave(savingsAccount);
+      return productMapper.mapSavingsAccountAndSave(productDTO);
     } else {
       return Single.error(new Throwable("The client already has an equal product"));
     }
@@ -90,19 +88,21 @@ public class ProductServiceImpl implements ProductService {
 
   @Override
   @Transactional
-  public Single<CheckingAccount> createCheckingAccount(CheckingAccount checkingAccount) {
+  public Single<CheckingAccount> createCheckingAccount(ProductDTO productDTO) {
     return productRepository
-      .getProductsByIdClient(checkingAccount.getIdClient())
+      .getProductsByIdClient(productDTO.getIdClient())
       .toList()
-      .flatMap(products -> getCheckingAccountSingle(checkingAccount, products));
+      .flatMap(products -> validateCheckingAccountAndSave(productDTO, products));
   }
 
-  private Single<CheckingAccount> getCheckingAccountSingle(CheckingAccount checkingAccount, List<Product> products) {
-    Client client = clientService.retrieveAClient(checkingAccount.getIdClient()).blockingGet();
-    if (products.isEmpty() && Objects.requireNonNull(client).getClientType().equals(PERSONAL)) {
-      return productMapper.mapCheckingAccountAndSave(checkingAccount);
+  private Single<CheckingAccount> validateCheckingAccountAndSave(ProductDTO productDTO, List<ProductDTO> products) {
+    Client client = clientService.retrieveAClient(productDTO.getIdClient()).blockingGet();
+    List<ProductDTO> checkingAccountFiltered = products.stream().filter(productFounded -> productFounded.getAccountBankType().equals(CHECKING_ACCOUNT)).collect(Collectors.toList());
+    if (checkingAccountFiltered.isEmpty() &&
+      Objects.requireNonNull(client).getClientType().equals(PERSONAL)) {
+      return productMapper.mapCheckingAccountAndSave(productDTO);
     } else if (Objects.requireNonNull(client).getClientType().equals(ENTERPRISE)) {
-      return productMapper.mapCheckingAccountAndSave(checkingAccount);
+      return productMapper.mapCheckingAccountAndSave(productDTO);
     } else {
       return Single.error(new Throwable("The client already has an equal product"));
     }
@@ -110,13 +110,18 @@ public class ProductServiceImpl implements ProductService {
 
   @Override
   @Transactional
-  public Single<FixedTermAccount> createFixedTermAccount(FixedTermAccount fixedTermAccount) {
+  public Single<FixedTermAccount> createFixedTermAccount(ProductDTO productDTO) {
     return productRepository
-      .getProductsByIdClient(fixedTermAccount.getIdClient())
+      .getProductsByIdClient(productDTO.getIdClient())
       .toList()
       .flatMap(products -> {
-        if (products.isEmpty()) {
-          return productMapper.mapFixedTermAccountAndSave(fixedTermAccount);
+        Client client = clientService.retrieveAClient(productDTO.getIdClient()).blockingGet();
+        List<ProductDTO> fixedTermAccountFiltered = products.stream().filter(productFounded -> productFounded.getAccountBankType().equals(FIX_TERM_ACCOUNT)).collect(Collectors.toList());
+        if (fixedTermAccountFiltered.isEmpty() &&
+          !Objects.equals(Objects.requireNonNull(client).getClientType(), ENTERPRISE) &&
+          Objects.requireNonNull(client).getClientType().equals(PERSONAL)
+        ) {
+          return productMapper.mapFixedTermAccountAndSave(productDTO);
         } else {
           return Single.error(new Throwable("The client already has an equal product"));
         }
@@ -201,7 +206,7 @@ public class ProductServiceImpl implements ProductService {
   }
 
   @Override
-  public Flowable<Product> getAllProductsByClientId(String clientId) {
+  public Flowable<ProductDTO> getAllProductsByClientId(String clientId) {
     return productRepository
       .getProductsByIdClient(clientId)
       .switchIfEmpty(Flowable.error(new ProductNotFoundException("The client currently has no products")));
@@ -291,11 +296,11 @@ public class ProductServiceImpl implements ProductService {
       .flatMap(products -> validateSavingsAccountVipClientAndSave(savingsAccountVipClientDTO, products));
   }
 
-  private Single<SavingsAccount> validateSavingsAccountVipClientAndSave(SavingsAccountVipClientDTO savingsAccountVipClientDTO, List<Product> products) {
+  private Single<SavingsAccount> validateSavingsAccountVipClientAndSave(SavingsAccountVipClientDTO savingsAccountVipClientDTO, List<ProductDTO> products) {
     products.forEach(product -> {
       if ((product.getProductType().equals(BANK_CREDIT) || product.getProductType().equals(CREDIT_CARD)) &&
         savingsAccountVipClientDTO.getAmount().compareTo(BigDecimal.valueOf(500)) > 0) {
-        productRepository.save(product).subscribe();
+        productRepository.save(productMapper.mapProductDTOToProduct(product)).subscribe();
       }
     });
     return Single.never();
@@ -309,10 +314,10 @@ public class ProductServiceImpl implements ProductService {
       .flatMap(this::validateCheckingAccountPymeClientAndSave);
   }
 
-  private Single<CheckingAccount> validateCheckingAccountPymeClientAndSave(List<Product> products) {
+  private Single<CheckingAccount> validateCheckingAccountPymeClientAndSave(List<ProductDTO> products) {
     products.forEach(product -> {
       if (product.getProductType().equals(BANK_CREDIT) || product.getProductType().equals(CREDIT_CARD)) {
-        productRepository.save(product).subscribe();
+        productRepository.save(productMapper.mapProductDTOToProduct(product)).subscribe();
       }
     });
     return Single.never();
